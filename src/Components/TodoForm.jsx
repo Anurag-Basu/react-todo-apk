@@ -1,50 +1,41 @@
+import React, { useState, useEffect } from "react";
 
-import React,{useState} from 'react'
+function TodoForm({ onSubmit, updateTodo }) {
+  const [input, setInput] = useState("");
 
-function TodoForm(props) {
-  const [input, setInput] = useState('');
-
-  const submitHandler = e => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
-    props.onSubmit({
-      id: Math.floor(Math.random() * 1000),
-      text : input
-    })
+    onSubmit(
+      {
+        id: Math.floor(Math.random() * 1000),
+        text: input,
+      },
+      !!updateTodo
+    );
 
-    setInput('')
-  }
+    setInput("");
+  };
+
+  useEffect(() => {
+    if (!updateTodo) return;
+    setInput(updateTodo.text);
+  }, [updateTodo]);
 
   return (
-    <form onSubmit={submitHandler} >
-      <input type="text"
-      placeholder='Add Todos'
-      value={input} 
-      onChange = {(e) => setInput(e.target.value) }
+    <form onSubmit={submitHandler}>
+      <input
+        type="text"
+        placeholder="Add Todos"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
       />
-      <button>Add Todos</button>
-
+      <button>{updateTodo ? "Update" : "Add Todos"}</button>
     </form>
-  )
+  );
 }
 
-export default TodoForm
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default TodoForm;
 
 // import React, { Component } from 'react'
 
@@ -52,7 +43,7 @@ export default TodoForm
 
 //   constructor(props) {
 //     super(props)
-  
+
 //     this.state = {
 //        todo : ''
 //     }
@@ -73,7 +64,7 @@ export default TodoForm
 //     const {todo} = this.state;
 //     return (
 //       <form onSubmit={this.addTodoHandler} >
-//         <input type="text" 
+//         <input type="text"
 //           placeholder='Add a todo'
 //           required
 //           value = {todo}
